@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.adc.dao.SchoolDao">
+
+    <insert id="insertList">
+        insert into school(school_id, school_name) values
+        <foreach collection="schoolList" item="school" separator=",">
+            (#{school.schoolId}, #{school.schoolName})
+        </foreach>
+        on duplicate key update school_name=values(school_name)
+    </insert>
+
+    <select id="selectByStatus" resultType="com.adc.model.School">
+        select school_id as schoolId from school where status = 0
+    </select>
+
+    <select id="selectAll" resultType="com.adc.model.School">
+        select school_id as schoolId from school
+    </select>
+
+    <update id="update" parameterType="com.adc.model.School">
+        update school set
+            school_name = #{schoolName},
+            province_id = #{provinceId},
+            province_name = #{provinceName},
+            city_id = #{cityId},
+            city_name = #{cityName},
+            `level` = #{level},
+            `type` = #{type},
+            nature = #{nature},
+            email = #{email},
+            phone = #{phone},
+            site = #{site},
+            address = #{address},
+            status = #{status}
+        where school_id = #{schoolId}
+    </update>
+
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.adc.dao.SchoolProvinceScoreCrawlTaskDao">
+
+    <insert id="insertList">
+        insert into school_province_score_crawl_task(
+            school_id,
+            student_province_id,
+            student_type,
+            year,
+            status
+        ) values
+        <foreach collection="taskList" item="task" separator=",">
+            (#{task.schoolId}, #{task.studentProvinceId}, #{task.studentType}, #{task.year}, #{task.status})
+        </foreach>
+    </insert>
+
+    <select id="selectTask" resultType="com.adc.model.SchoolProvinceScoreCrawlTask">
+        select
+            id,
+            school_id as schoolId,
+            student_province_id as studentProvinceId,
+            student_type as studentType,
+            year,
+            status
+        from school_province_score_crawl_task
+        where status = 0 limit #{limit}
+    </select>
+
+    <update id="update" parameterType="com.adc.model.SchoolProvinceScoreCrawlTask">
+        update school_province_score_crawl_task
+        set status=1
+        where id=#{id}
+    </update>
+</mapper>
